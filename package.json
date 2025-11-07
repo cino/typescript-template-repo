@@ -32,11 +32,12 @@
     "@types/luxon": "^3.7.1",
     "@types/node": "^24.9.1",
     "@vitest/coverage-v8": "^4.0.2",
-    "lefthook": "^2.0.1",
+    "lefthook": "^2.0.2",
     "typescript": "^5.9.3",
     "vitest": "^4.0.2"
   },
   "scripts": {
+    "prepare": "lefthook install",
     "lint": "biome lint src tests",
     "lint:commit-msg": "commitlint --edit $1",
     "test": "vitest",

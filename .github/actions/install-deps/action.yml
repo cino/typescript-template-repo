@@ -1,5 +1,5 @@
 name: 'Install dependencies'
-description: 'Install (and automatically cache) dependencies'
+description: 'Install and cache dependencies'
 inputs:
   fail-on-cache-miss:
     description: 'Fail the action if the cache is not found'
@@ -21,7 +21,7 @@ runs:
       id: cache-npm
       with:
         path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-node-
         fail-on-cache-miss: input.fail-on-cache-miss

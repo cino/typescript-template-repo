@@ -16,24 +16,7 @@ runs:
       continue-on-error: true
       with:
         node-version: ${{ inputs.node-version }}
-
-    - uses: actions/cache@v4
-      id: cache-npm
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
-        restore-keys: |
-          ${{ runner.os }}-node-
-        fail-on-cache-miss: ${{ inputs.fail-on-cache-miss }}
-
-    - name: Cache node_modules
-      id: cache-node-modules
-      uses: actions/cache@v4
-      with:
-        path: node_modules
-        key: ${{ runner.os }}-${{ matrix.node-version }}-${{ github.event.pull_request.number }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ matrix.node-version }}-${{ github.event.pull_request.number }}-nodemodules-
+        cache: 'npm'
 
     - run: npm ci
       shell: bash

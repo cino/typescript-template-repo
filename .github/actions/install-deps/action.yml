@@ -1,0 +1,39 @@
+name: 'Install dependencies'
+description: 'Install (and automatically cache) dependencies'
+inputs:
+  fail-on-cache-miss:
+    description: 'Fail the action if the cache is not found'
+    required: false
+    default: false
+  node-version:
+    description: 'Node.js version to use'
+    required: false
+    default: '24'
+runs:
+  using: 'composite'
+  steps:
+    - uses: actions/setup-node@v6
+      continue-on-error: true
+      with:
+        node-version: '24'
+
+    - uses: actions/cache@v4
+      id: cache-npm
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json')
+        restore-keys: |
+          ${{ runner.os }}-node-
+        fail-on-cache-miss: input.fail-on-cache-miss
+
+    - name: Cache node_modules
+      id: cache-node-modules
+      uses: actions/cache@v4
+      with:
+        path: node_modules
+        key: ${{ runner.os }}-${{ matrix.node-version }}-${{ github.event.pull_request.number }}-nodemodules-${{ hashFiles('**/yarn.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.node-version }}-${{ github.event.pull_request.number }}-nodemodules-
+
+    - run: npm ci
+      shell: bash
